@@ -20,3 +20,7 @@ def test_read_item_with_query_param():
     response = client.get("/items/1?q=test")
     assert response.status_code == 200
     assert response.json() == {"item_id": 1, "q": "test"}
+
+
+def test_a():
+    assert 1 == 2
