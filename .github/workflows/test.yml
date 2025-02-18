@@ -6,22 +6,29 @@ on:
       - main
 
 jobs:
-  test:
+  test_backend:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.12'  # 或你專案所需的 Python 版本
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12" # 或你專案所需的 Python 版本
 
-    - name: Install dependencies
-      run: |
-        pip install -r backend/requirements.txt  # 安裝依賴
+      - name: Install uv
+        run: |
+          cd ./backend
+          pip install uv
 
-    - name: Run pytest for backend
-      run: |
-        pytest backend/tests  # 指定 backend/test 目錄執行測試
+      - name: Install dependencies
+        run: |
+          cd ./backend
+          uv sync
+
+      - name: Run pytest for backend
+        run: |
+          cd ./backend
+          uv run pytest
