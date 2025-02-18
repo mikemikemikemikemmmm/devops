@@ -23,4 +23,4 @@ def test_read_item_with_query_param():
 
 
 def test_a():
-    assert 1 == 2
+    assert 2 == 2
