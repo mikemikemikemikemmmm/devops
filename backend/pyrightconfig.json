@@ -1,0 +1,16 @@
+{
+    "exclude": [
+        "**/tests",
+        "**/__pycache__"
+    ],
+    "include": [
+      "src", 
+      "main.py"
+    ],
+    "strict":  [
+        "src", 
+        "main.py"
+      ],
+    "reportMissingImports": true,
+    "reportMissingTypeStubs": false
+}
