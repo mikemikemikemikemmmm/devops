@@ -13,4 +13,5 @@ COPY . .
 EXPOSE 8000
 
 # 启动 FastAPI 应用，使用 Uvicorn 作为 ASGI 服务器
-CMD ["uv","run","uvicorn", "src.app:app", "--host", "0.0.0.0", "--port", "8000"]
+# CMD ["uv","run","uvicorn", "src.app:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uv","run","run.py","prod"]

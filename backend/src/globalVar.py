@@ -1,12 +1,14 @@
 import sys
+
+
 class GlobalVar:
-    environment: str
+    environment: str = "development"
 
     def __init__(self):
-        environment = sys.argv[1]
-        if environment == 'prod':
-            self.environment = 'production'
-        else:
-            self.environment = "development"
+        if len(sys.argv) >= 2:
+            environment = sys.argv[1]
+            if environment == "prod":
+                self.environment = "production"
+
 
 global_var = GlobalVar()

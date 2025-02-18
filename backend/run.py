@@ -1,4 +1,3 @@
-import sys
 import uvicorn
 from src.globalVar import global_var
 
@@ -8,5 +7,6 @@ if __name__ == "__main__":
         "src.app:app",
         port=8000,
         log_level="info",
+        host="0.0.0.0",
         reload=env != "production",
     )
