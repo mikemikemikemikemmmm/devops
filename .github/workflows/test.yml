@@ -8,27 +8,54 @@ on:
 jobs:
   test_backend:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.12" # 或你專案所需的 Python 版本
+          python-version: "3.12"
 
       - name: Install uv
-        run: |
-          cd ./backend
-          pip install uv
+        working-directory: ./backend
+        run: pip install uv
 
       - name: Install dependencies
-        run: |
-          cd ./backend
-          uv sync
+        working-directory: ./backend
+        run: uv sync
+
+      - name: Test ruff for lint
+        working-directory: ./backend
+        run: uv run ruff check .
+
+      - name: Test pyright for type
+        working-directory: ./backend
+        run: uv run pyright
 
       - name: Run pytest for backend
-        run: |
-          cd ./backend
-          uv run pytest
+        working-directory: ./backend
+        run: uv run pytest
+
+  test_frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: Run lint for frontend
+        working-directory: ./frontend
+        run: npm run lint
+        
+      - name: Run test for frontend
+        working-directory: ./frontend
+        run: npm run test

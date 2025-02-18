@@ -1,3 +1,9 @@
 {
-    "python.analysis.typeCheckingMode": "strict"
+    "python.analysis.diagnosticMode": "workspace", // 分析整個工作區
+    "python.analysis.autoImportCompletions": true, // 啟用自動補全
+    "python.analysis.indexing": true, // 開啟索引，加快檔案分析
+    "editor.formatOnSave": true, // 儲存時自動格式化
+    "ruff.enable": true, // 啟用 Ruff
+    "ruff.organizeImports": true, // 讓 Ruff 處理 import 排序
+    "ruff.fixAll": true, // 自動修復代碼問題
 }
