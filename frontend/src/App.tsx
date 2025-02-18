@@ -1,11 +1,19 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-
+const baseUrl: string = import.meta.env.VITE_BACKEND_URL
 export default function App() {
   const [count, setCount] = useState(0)
-
+  const [fetchResult, setFetchResult] = useState('')
+  useEffect(() => {
+    const tryFetch = async () => {
+      const result = await fetch(`${baseUrl}`)
+      const jsonR = await result.json()
+      setFetchResult(jsonR)
+    }
+    tryFetch()
+  }, [])
 
   return (
     <>
@@ -26,6 +34,9 @@ export default function App() {
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
       </div>
+      <p>
+        {fetchResult}
+      </p>
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>

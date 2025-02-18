@@ -30,6 +30,7 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "fastapi", extra = ["standard"] },
+    { name = "python-dotenv" },
 ]
 
 [package.dev-dependencies]
@@ -40,7 +41,10 @@ dev = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "fastapi", extras = ["standard"], specifier = ">=0.115.8" }]
+requires-dist = [
+    { name = "fastapi", extras = ["standard"], specifier = ">=0.115.8" },
+    { name = "python-dotenv", specifier = ">=1.0.1" },
+]
 
 [package.metadata.requires-dev]
 dev = [

@@ -1,0 +1,23 @@
+
+services:
+  frontend:
+    build:
+      context: ./frontend  # 假设 frontend 目录包含前端 Dockerfile 和构建文件
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+    networks:
+      - app-network
+
+  backend:
+    build:
+      context: ./backend  # 假设 backend 目录包含后端 Dockerfile
+    expose:
+      - "8000:8000"
+    networks:
+      - app-network
+      
+networks:
+  app-network:
+    driver: bridge
