@@ -13,7 +13,7 @@ app = FastAPI()
 if env_name != "production":
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=[frontend_origin],  # 允许所有域名访问，或者指定具体的域名
+        allow_origins=[frontend_origin or ""],  # 允许所有域名访问，或者指定具体的域名
         allow_methods=["*"],  # 允许所有HTTP方法，如 GET, POST 等
         allow_headers=["*"],  # 允许所有头部信息
     )
