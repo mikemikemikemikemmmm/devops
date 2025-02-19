@@ -1,15 +1,19 @@
 from typing import Union
+from prometheus_fastapi_instrumentator import Instrumentator
 
-from fastapi import FastAPI,Request
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 import os
 from dotenv import load_dotenv
 from .globalVar import global_var
+
 env_name = global_var.environment
-env_file_path = os.path.join(os.path.dirname(__file__), '..', f'.env.{env_name}')
+env_file_path = os.path.join(os.path.dirname(__file__), "..", f".env.{env_name}")
 load_dotenv(dotenv_path=env_file_path)
 frontend_origin = os.getenv("FRONTEND_ORIGIN")
 app = FastAPI()
+Instrumentator().instrument(app).expose(app)
+
 if env_name != "production":
     app.add_middleware(
         CORSMiddleware,
@@ -20,8 +24,8 @@ if env_name != "production":
 
 
 @app.get("/")
-def read_root(req:Request):
-    print(req.headers.__dict__,111)
+def read_root(req: Request):
+    print(req.headers.__dict__, 111)
     return "hello world"
 
 

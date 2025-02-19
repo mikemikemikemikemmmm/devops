@@ -2,7 +2,7 @@
 services:
   frontend:
     build:
-      context: ./frontend  # 假设 frontend 目录包含前端 Dockerfile 和构建文件
+      context: ./frontend 
     depends_on:
       - backend
       - nginx
@@ -21,38 +21,38 @@ services:
 
   backend:
     build:
-      context: ./backend  # 假设 backend 目录包含后端 Dockerfile
+      context: ./backend 
     expose:
       - "8000:8000"
     networks:
       - app-network
-  # prometheus:
-  #   image: prom/prometheus:latest
-  #   restart: unless-stopped
-  #   container_name: prometheus
-  #   ports:
-  #     - 9090:9090
-  #   volumes:
-  #     - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-  #   networks:
-  #     example-network:
-  #       ipv4_address: 172.16.238.11
+  prometheus:
+    image: prom/prometheus:latest
+    restart: unless-stopped
+    container_name: prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      app-network:
+        ipv4_address: 172.16.238.11
 
-  # grafana:
-  #   image: grafana/grafana
-  #   container_name: grafana
-  #   restart: unless-stopped
-  #   depends_on:
-  #     - prometheus
-  #   ports:
-  #     - 3000:3000
-  #   volumes:
-  #     - ./grafana/provisioning:/etc/grafana/provisioning
-  #   env_file:
-  #     - ./grafana/config.monitoring
-  #   networks:
-  #     example-network:
-  #       ipv4_address: 172.16.238.12
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    restart: unless-stopped
+    depends_on:
+      - prometheus
+    ports:
+      - 3001:3001
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    env_file:
+      - ./grafana/config.monitoring
+    networks:
+      app-network:
+        ipv4_address: 172.16.238.12
       
 networks:
   app-network:
