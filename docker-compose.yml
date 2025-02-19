@@ -5,10 +5,19 @@ services:
       context: ./frontend  # 假设 frontend 目录包含前端 Dockerfile 和构建文件
     depends_on:
       - backend
+      - nginx
+    volumes:
+      - frontend-files:/app/dist
+
+  nginx:
+    build:
+      context: ./nginx  
     ports:
       - "80:80"
     networks:
       - app-network
+    volumes:
+      - frontend-files:/usr/share/nginx/html/frontend
 
   backend:
     build:
@@ -17,7 +26,42 @@ services:
       - "8000:8000"
     networks:
       - app-network
+  # prometheus:
+  #   image: prom/prometheus:latest
+  #   restart: unless-stopped
+  #   container_name: prometheus
+  #   ports:
+  #     - 9090:9090
+  #   volumes:
+  #     - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+  #   networks:
+  #     example-network:
+  #       ipv4_address: 172.16.238.11
+
+  # grafana:
+  #   image: grafana/grafana
+  #   container_name: grafana
+  #   restart: unless-stopped
+  #   depends_on:
+  #     - prometheus
+  #   ports:
+  #     - 3000:3000
+  #   volumes:
+  #     - ./grafana/provisioning:/etc/grafana/provisioning
+  #   env_file:
+  #     - ./grafana/config.monitoring
+  #   networks:
+  #     example-network:
+  #       ipv4_address: 172.16.238.12
       
 networks:
   app-network:
+    name: app-network
     driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.238.0/24
+
+volumes:
+  frontend-files:
