@@ -4,6 +4,10 @@ server:
   http_listen_port: 3100
   grpc_listen_port: 9096
 
+# prometheus:
+#   # 是否启用 Prometheus 拉取功能
+#   scrape_interval: 15s
+
 common:
   instance_addr: 127.0.0.1
   path_prefix: /tmp/loki

@@ -24,8 +24,9 @@ services:
     logging:
       driver: "json-file"
       options:
-        max-size: "10m"
-        max-file: "3"
+        labels: "nginx"
+        max-size: "1m"
+        max-file: "10"
 
   backend:
     # environment:
@@ -36,13 +37,16 @@ services:
       - "8000:8000"
     networks:
       - app-network
-    volumes:
-      - ./logs:/var/log/app
+    depends_on:
+      - loki
+    # volumes:
+    #   - ./logs:/var/log/app
     logging:
       driver: "json-file"
       options:
-        max-size: "10m"
-        max-file: "3"
+        labels: "backend"
+        max-size: "1k"
+        max-file: "10"
 
   prometheus:
     image: prom/prometheus:latest
@@ -53,8 +57,7 @@ services:
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     networks:
-      app-network:
-        # ipv4_address: 172.16.238.11
+      grafana-network:
 
   grafana:
     image: grafana/grafana
@@ -63,14 +66,13 @@ services:
     depends_on:
       - prometheus
     ports:
-      - 3001:3001
+      - 3000:3000
     volumes:
       - ./grafana/provisioning:/etc/grafana/provisioning
     env_file:
       - ./grafana/config.monitoring
     networks:
-      app-network:
-        # ipv4_address: 172.16.238.12
+      grafana-network:
       
   loki:
     build:
@@ -81,6 +83,8 @@ services:
     volumes:
       - ./loki/local-config.yml:/etc/loki/local-config.yml
     command: -config.file=/etc/loki/local-config.yml
+    networks:
+      grafana-network:
 
 
   promtail:
@@ -88,14 +92,24 @@ services:
     container_name: promtail
     volumes:
       - ./promtail/promtail-config.yml:/etc/promtail/config.yml
-      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/log:/var/log
+      - /var/run/docker.sock:/var/run/docker.sock
     command: -config.file=/etc/promtail/config.yml
     depends_on:
       - loki
+    networks:
+      grafana-network:
+
+  # alloy:
+  #   image: grafana/alloy
+  #   volumes:
+  #     - ./alloy/config.alloy:/etc/alloy/config.alloy
 
 networks:
   app-network:
     name: app-network
+  grafana-network:
+    name: grafana-network
 
 volumes:
   frontend-files:
