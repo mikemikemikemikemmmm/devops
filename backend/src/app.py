@@ -18,7 +18,7 @@ load_dotenv(dotenv_path=env_file_path)
 frontend_origin = os.getenv("FRONTEND_ORIGIN")
 app = FastAPI()
 Instrumentator().instrument(app).expose(app)
-
+print(frontend_origin,123)
 if env_name != "production":
     app.add_middleware(
         CORSMiddleware,

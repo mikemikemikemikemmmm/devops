@@ -11,5 +11,10 @@ RUN npm install
 # Copy the rest of the app source code
 COPY . ./
 
+ARG VITE_BACKEND_URL
+
+# Set environment variables during the build process
+ENV VITE_BACKEND_URL=$VITE_BACKEND_URL
+
 # Build the React app
 RUN npm run build

@@ -3,14 +3,15 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 const baseUrl: string = import.meta.env.VITE_BACKEND_URL
-const isDev = import.meta.env.DEV
+console.log(import.meta.env,111)
+// const isDev = import.meta.env.DEV
 export default function App() {
   const [count, setCount] = useState(0)
   const [fetchResult, setFetchResult] = useState('')
   useEffect(() => {
-    if (isDev) {
-      return
-    }
+    // if (isDev) {
+    //   return
+    // }
     const tryFetch = async () => {
       const result = await fetch(`${baseUrl}`)
       const jsonR = await result.json()
